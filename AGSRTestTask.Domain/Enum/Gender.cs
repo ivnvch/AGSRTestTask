@@ -2,8 +2,8 @@ namespace AGSRTestTask.Domain.Enum;
 
 public enum Gender
 {
-    Male,
-    Female,
-    Other,
-    Unknown
+    Unknown = 0,
+    Male = 1,
+    Female = 2,
+    Other = 3
 }
