@@ -1,12 +1,11 @@
-using AGSRTestTask.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AGSRTestTask.Persistence.Configuration;
+namespace AGSRTestTask.Persistence.Patient.Configuration;
 
-public class PatientConfiguration: IEntityTypeConfiguration<Patient>
+public class PatientConfiguration: IEntityTypeConfiguration<Domain.Entities.Patient>
 {
-    public void Configure(EntityTypeBuilder<Patient> builder)
+    public void Configure(EntityTypeBuilder<Domain.Entities.Patient> builder)
     {
         builder.Property(p => p.BirthDate).IsRequired();
         builder.Property(p => p.Gender).HasConversion<string>().IsRequired();
