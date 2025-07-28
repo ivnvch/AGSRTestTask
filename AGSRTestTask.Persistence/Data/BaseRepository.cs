@@ -1,10 +1,11 @@
 using System.Linq.Expressions;
 using AGSRTestTask.Application.Abstractions;
+using AGSRTestTask.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace AGSRTestTask.Persistence.Data;
 
-public abstract class BaseRepository<T>: IBaseRepository<T> where T : class
+public abstract class BaseRepository<T>: IBaseRepository<T> where T : BaseEntity
 {
     private readonly DataContext _context;
 
@@ -25,10 +26,10 @@ public abstract class BaseRepository<T>: IBaseRepository<T> where T : class
         return Task.FromResult(entity);
     }
 
-    public async Task<bool> DeleteAsync(T entity, CancellationToken cancellationToken)
+    public Task<bool> DeleteAsync(T entity, CancellationToken cancellationToken)
     { 
         _context.Set<T>().Remove(entity);
-        return await Task.FromResult(true);
+        return Task.FromResult(true);
     }
 
     public async Task<T> GetAsync(Expression<Func<T, bool>> expression)

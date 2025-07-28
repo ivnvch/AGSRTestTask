@@ -1,8 +1,9 @@
 using System.Linq.Expressions;
+using AGSRTestTask.Domain.Entities;
 
 namespace AGSRTestTask.Application.Abstractions;
 
-public interface IBaseRepository<T> where T : class
+public interface IBaseRepository<T> where T : BaseEntity
 {
     Task<T> AddAsync(T entity,  CancellationToken cancellationToken);
 

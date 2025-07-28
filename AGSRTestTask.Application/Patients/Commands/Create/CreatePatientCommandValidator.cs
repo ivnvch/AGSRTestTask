@@ -1,3 +1,4 @@
+using AGSRTestTask.Domain.Enum;
 using FluentValidation;
 
 namespace AGSRTestTask.Application.Patients.Commands.Create;
@@ -16,8 +17,8 @@ public class CreatePatientCommandValidator: AbstractValidator<CreatePatientComma
             .LessThan(DateTime.UtcNow).WithMessage("Birth date must be in the past.");
 
         RuleFor(x => x.Gender)
-            .Must(g => new[] { "male", "female", "other", "unknown" }
-                .Contains(g.ToLower()))
+            .Must(g => Enum.GetNames<Gender>()
+                .Any(gender => string.Equals(g, gender, StringComparison.OrdinalIgnoreCase)))
             .WithMessage("Gender must be one of: male, female, other, unknown.");
 
         RuleFor(x => x.Use)

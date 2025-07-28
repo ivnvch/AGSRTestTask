@@ -1,5 +1,5 @@
 using AGSRTestTask.Application.Abstractions;
-using AGSRTestTask.Application.Abstractions.Messaging;
+using AGSRTestTask.Application.Abstractions.CQRS;
 using AGSRTestTask.Application.Patients.Models.Responses;
 using AGSRTestTask.Domain.Entities;
 using AGSRTestTask.Domain.Enum;
@@ -29,13 +29,15 @@ public class CreatePatientCommandHandler: ICommandHandler<CreatePatientCommand, 
                    (request.Use, 
                     request.LastName, 
                     request.FirstName, 
-                    request.MiddleName);
+                    request.MiddleName
+                   );
             
             Patient patient = new Patient
                    (humanName: humanName, 
                     gender: genderParsed, 
                     DateTime.UtcNow, 
-                    active: request.Active );
+                    active: request.Active 
+                   );
 
             await _wrapperRepository.PatientRepository.AddAsync(patient, cancellationToken);
             await _unitOfWork.SaveChangesAsync(cancellationToken);
