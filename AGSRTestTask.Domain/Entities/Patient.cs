@@ -1,24 +1,24 @@
-using AGSRTestTask.Domain.Common.Interfaces;
 using AGSRTestTask.Domain.Enum;
 
 namespace AGSRTestTask.Domain.Entities;
 
-public class Patient:IEntityId<Guid>
+public class Patient:BaseEntity
 {
     public Guid Id { get; set; } =  Guid.NewGuid();
     
-    HumanName Name { get; set; }
+    public HumanName HumanName { get; set; }
     public Gender  Gender { get; private set; }
     
     public DateTime BirthDate { get; private set; }
-    private bool Active { get; set; }
+    public bool Active { get; set; }
     
-    public Patient(HumanName name, Gender gender, DateTime birthDate, bool active)
+    private Patient(){}
+    public Patient(HumanName humanName, Gender gender, DateTime birthDate, bool active)
     {
-        if (string.IsNullOrWhiteSpace(name.LastName))
+        if (string.IsNullOrWhiteSpace(humanName.LastName))
             throw new ArgumentException("LastName is required");
 
-        Name = name;
+        HumanName = humanName;
         Gender = gender;
         BirthDate = birthDate;
         Active = active;
