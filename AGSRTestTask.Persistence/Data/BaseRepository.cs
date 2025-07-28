@@ -13,19 +13,19 @@ public abstract class BaseRepository<T>: IBaseRepository<T> where T : class
         _context = context;
     }
 
-    public async Task<T> AddAsync(T entity)
+    public async Task<T> AddAsync(T entity,  CancellationToken cancellationToken)
     {
-        await _context.Set<T>().AddAsync(entity);
+        await _context.Set<T>().AddAsync(entity, cancellationToken);
         return entity;
     }
 
-    public Task<T> UpdateAsync(T entity)
+    public Task<T> UpdateAsync(T entity,  CancellationToken cancellationToken)
     { 
         _context.Set<T>().Update(entity);
         return Task.FromResult(entity);
     }
 
-    public async Task<bool> DeleteAsync(T entity)
+    public async Task<bool> DeleteAsync(T entity, CancellationToken cancellationToken)
     { 
         _context.Set<T>().Remove(entity);
         return await Task.FromResult(true);

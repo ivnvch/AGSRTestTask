@@ -1,9 +1,10 @@
-using AGSRTestTask.Application.Patient.Repositories;
+using AGSRTestTask.Application.Patients.Repositories;
+using AGSRTestTask.Domain.Entities;
 using AGSRTestTask.Persistence.Data;
 
-namespace AGSRTestTask.Persistence.Patient.Repositories;
+namespace AGSRTestTask.Persistence.Patients.Repositories;
 
-public class PatientRepository:BaseRepository<Domain.Entities.Patient>, IPatientRepository
+public class PatientRepository:BaseRepository<Patient>, IPatientRepository
 {
     public PatientRepository(DataContext context) : base(context)
     {

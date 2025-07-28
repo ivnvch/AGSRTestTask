@@ -1,4 +1,3 @@
-
 namespace AGSRTestTask.Domain.Entities;
 
 public class HumanName
@@ -11,9 +10,6 @@ public class HumanName
     private HumanName(){}
     public HumanName(string use, string lastName, string firstName, string middleName)
     {
-        if (string.IsNullOrWhiteSpace(LastName))
-            throw new ArgumentException("LastName is required");
-
         Use = use;
         LastName = lastName;
         MiddleName = middleName;

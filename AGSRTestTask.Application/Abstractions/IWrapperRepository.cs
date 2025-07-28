@@ -1,4 +1,4 @@
-using AGSRTestTask.Application.Patient.Repositories;
+using AGSRTestTask.Application.Patients.Repositories;
 
 namespace AGSRTestTask.Application.Abstractions;
 

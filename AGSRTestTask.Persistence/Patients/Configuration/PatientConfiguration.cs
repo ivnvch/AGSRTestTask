@@ -1,11 +1,12 @@
+using AGSRTestTask.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace AGSRTestTask.Persistence.Patient.Configuration;
+namespace AGSRTestTask.Persistence.Patients.Configuration;
 
-public class PatientConfiguration: IEntityTypeConfiguration<Domain.Entities.Patient>
+public class PatientConfiguration: IEntityTypeConfiguration<Patient>
 {
-    public void Configure(EntityTypeBuilder<Domain.Entities.Patient> builder)
+    public void Configure(EntityTypeBuilder<Patient> builder)
     {
         builder.Property(p => p.BirthDate).IsRequired();
         builder.Property(p => p.Gender).HasConversion<string>().IsRequired();
@@ -13,10 +14,10 @@ public class PatientConfiguration: IEntityTypeConfiguration<Domain.Entities.Pati
         
         builder.OwnsOne(p => p.HumanName, humanName =>
         {
-            humanName.Property(h => h.FirstName).IsRequired().HasColumnName("FirstName");
-            humanName.Property(h => h.LastName).IsRequired().HasColumnName("LastName");
-            humanName.Property(h => h.MiddleName).HasColumnName("MiddleName");
-            humanName.Property(h => h.Use).HasColumnName("Use");
+            humanName.Property(h => h.FirstName).IsRequired();
+            humanName.Property(h => h.LastName).IsRequired();
+            humanName.Property(h => h.MiddleName);
+            humanName.Property(h => h.Use);
         });
     }
 }

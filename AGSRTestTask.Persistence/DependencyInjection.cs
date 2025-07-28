@@ -1,7 +1,7 @@
 using AGSRTestTask.Application.Abstractions;
-using AGSRTestTask.Application.Patient.Repositories;
+using AGSRTestTask.Application.Patients.Repositories;
 using AGSRTestTask.Persistence.Data;
-using AGSRTestTask.Persistence.Patient.Repositories;
+using AGSRTestTask.Persistence.Patients.Repositories;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace AGSRTestTask.Persistence;

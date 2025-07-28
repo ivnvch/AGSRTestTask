@@ -2,7 +2,7 @@ using AGSRTestTask.Domain.Enum;
 
 namespace AGSRTestTask.Domain.Entities;
 
-public class Patient:Entity
+public class Patient:BaseEntity
 {
     public Guid Id { get; set; } =  Guid.NewGuid();
     
