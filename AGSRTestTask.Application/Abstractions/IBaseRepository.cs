@@ -11,7 +11,7 @@ public interface IBaseRepository<T> where T : BaseEntity
 
     Task<bool> DeleteAsync(T entity, CancellationToken cancellationToken);
 
-    Task<T> GetAsync(Expression<Func<T, bool>> expression);
+    Task<T> GetAsync(Expression<Func<T, bool>> expression, CancellationToken cancellationToken);
 
-    Task<List<T>> ListAsync(Expression<Func<T, bool>> expression);
+    Task<List<T>> ListAsync(Expression<Func<T, bool>> expression, CancellationToken cancellationToken);
 }

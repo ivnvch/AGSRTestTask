@@ -10,4 +10,4 @@ public record CreatePatientCommand
            string LastName, 
            string FirstName, 
            string MiddleName,
-           string Use): ICommand<CreatePationResponse>;
+           string Use): ICommand<CreatePatientResponse>;

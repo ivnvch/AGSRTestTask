@@ -32,12 +32,12 @@ public abstract class BaseRepository<T>: IBaseRepository<T> where T : BaseEntity
         return Task.FromResult(true);
     }
 
-    public async Task<T> GetAsync(Expression<Func<T, bool>> expression)
+    public async Task<T> GetAsync(Expression<Func<T, bool>> expression, CancellationToken cancellationToken)
     {
         return await _context.Set<T>().FirstOrDefaultAsync(expression);
     }
 
-    public async Task<List<T>> ListAsync(Expression<Func<T, bool>> expression)
+    public async Task<List<T>> ListAsync(Expression<Func<T, bool>> expression, CancellationToken cancellationToken)
     {
         return await _context.Set<T>().Where(expression).ToListAsync();
     }
