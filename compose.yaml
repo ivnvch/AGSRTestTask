@@ -1,0 +1,47 @@
+﻿version: "3.9"
+
+services:
+  db:
+    image: postgres:17
+    container_name: agsr-db
+    environment:
+      POSTGRES_DB: agsr
+      POSTGRES_USER: agsruser
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - agsr-network
+
+  api:
+    build:
+      context: ..
+      dockerfile: AGSRTestTask.API/Dockerfile
+    container_name: agsr-api
+    depends_on:
+      - db
+    ports:
+      - "7239:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    networks:
+      - agsr-network
+
+  generator:
+    build:
+      context: ..
+      dockerfile: tools/AGSRTestTask.Generator/Dockerfile
+    container_name: agsr-generator
+    depends_on:
+      - api
+    entrypoint: ["sh", "-c", "sleep 10 && dotnet AGSRTestTask.Generator.dll"]
+    networks:
+      - agsr-network
+
+volumes:
+  pgdata:
+
+networks:
+  agsr-network:

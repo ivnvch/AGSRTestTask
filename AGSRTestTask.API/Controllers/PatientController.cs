@@ -41,8 +41,8 @@ public class PatientController : ControllerBase
                 request.LastName,
                 request.FirstName,
                 request.MiddleName,
-                request.Use
-                );
+                request.Use);
+        
         var response = await _mediator.Send(model);
 
         if (response.IsSuccess)
