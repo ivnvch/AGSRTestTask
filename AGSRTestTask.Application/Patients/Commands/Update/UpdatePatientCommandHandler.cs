@@ -1,5 +1,6 @@
 using AGSRTestTask.Application.Abstractions;
 using AGSRTestTask.Application.Abstractions.CQRS;
+using AGSRTestTask.Application.Extensions;
 using AGSRTestTask.Application.Patients.Models.Responses;
 using AGSRTestTask.Domain.Enum;
 using AGSRTestTask.Domain.Result;
@@ -31,6 +32,7 @@ public class UpdatePatientCommandHandler : ICommandHandler<UpdatePatientCommand,
             };
         }
         
+        response.Gender = request.Gender.ToEnum<Gender>();
         response.HumanName.LastName = request.LastName;
         response.HumanName.FirstName = request.FirstName;
         response.HumanName.MiddleName = request.MiddleName;

@@ -1,8 +1,7 @@
 namespace AGSRTestTask.Application.Patients.Models.Requests;
 
 public record UpdatePatientRequest
-       (Guid PatientId,
-        string Gender, 
+       (string Gender, 
         DateTime DateOfBirth, 
         bool Active,
         string LastName, 

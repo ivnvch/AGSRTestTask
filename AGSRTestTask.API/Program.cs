@@ -9,8 +9,8 @@ builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Confi
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+//builder.Services.AddEndpointsApiExplorer();
+//builder.Services.AddSwaggerGen();
 builder.Services.AddSwagger();
 
 builder.Services.AddPersistenceExtensions();
@@ -22,13 +22,12 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwagger();
     app.UseSwaggerUI(
         c =>
         {
             c.SwaggerEndpoint("/swagger/v1/swagger.json", "AGSRTestTask v 1.0");
             c.SwaggerEndpoint("/swagger/v2/swagger.json", "AGSRTestTask v 2.0");
-            c.RoutePrefix = string.Empty;
+           // c.RoutePrefix = string.Empty;
         });
 }
 

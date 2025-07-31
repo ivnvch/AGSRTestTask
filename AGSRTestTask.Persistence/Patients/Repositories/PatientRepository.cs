@@ -9,4 +9,5 @@ public class PatientRepository:BaseRepository<Patient>, IPatientRepository
     public PatientRepository(DataContext context) : base(context)
     {
     }
+    
 }

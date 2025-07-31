@@ -6,6 +6,7 @@ namespace AGSRTestTask.Application.Abstractions;
 public interface IBaseRepository<T> where T : BaseEntity
 {
     Task<T> AddAsync(T entity,  CancellationToken cancellationToken);
+    Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken);
 
     Task<T> UpdateAsync(T entity, CancellationToken cancellationToken);
 

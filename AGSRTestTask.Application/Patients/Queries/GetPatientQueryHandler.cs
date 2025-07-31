@@ -1,6 +1,7 @@
 using AGSRTestTask.Application.Abstractions;
 using AGSRTestTask.Application.Abstractions.CQRS;
 using AGSRTestTask.Application.Patients.Models.Responses;
+using AGSRTestTask.Domain.Enum;
 using AGSRTestTask.Domain.Result;
 
 namespace AGSRTestTask.Application.Patients.Queries;
@@ -18,6 +19,15 @@ public class GetPatientQueryHandler : IQueryHandler<GetPatientQuery, GetPatientR
     {
         var response = await _repository.PatientRepository.GetAsync(x => x.Id == request.PatientId, cancellationToken);
 
+        if (response == null)
+        {
+            return new BaseResult<GetPatientResponse>
+            {
+                ErrorCode = (int)ErrorCodes.PatientNotFound,
+                ErrorMessage = "Patient not found"
+            };
+        }
+        
         return new BaseResult<GetPatientResponse>
         {
             Data = new GetPatientResponse

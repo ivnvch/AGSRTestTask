@@ -20,6 +20,12 @@ public abstract class BaseRepository<T>: IBaseRepository<T> where T : BaseEntity
         return entity;
     }
 
+    public Task<IEnumerable<T>> AddRangeAsync(IEnumerable<T> entities, CancellationToken cancellationToken)
+    {
+        _context.Set<T>().AddRange(entities);
+        return Task.FromResult(entities);
+    }
+
     public Task<T> UpdateAsync(T entity,  CancellationToken cancellationToken)
     { 
         _context.Set<T>().Update(entity);
