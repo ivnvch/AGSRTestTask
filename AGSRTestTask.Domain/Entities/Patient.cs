@@ -7,7 +7,7 @@ public class Patient:BaseEntity
     public Guid Id { get; set; } =  Guid.NewGuid();
     
     public HumanName HumanName { get; set; }
-    public Gender  Gender { get; private set; }
+    public Gender  Gender { get; set; }
     
     public DateTime BirthDate { get; private set; }
     public bool Active { get; set; }

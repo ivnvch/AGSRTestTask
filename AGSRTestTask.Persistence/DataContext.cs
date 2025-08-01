@@ -14,7 +14,8 @@ public class DataContext:DbContext
     public DataContext(IConfiguration configuration)
     {
         _configuration = configuration;
-        Database.EnsureCreated();
+        /*Database.EnsureDeleted();
+        Database.EnsureCreated()*/;
     }
 
 

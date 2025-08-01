@@ -14,6 +14,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AGSRTestTask.Application", "AGSRTestTask.Application\AGSRTestTask.Application.csproj", "{17DFC638-C217-4060-960F-FF5A4F5F7A33}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tools", "tools", "{189D49FD-3055-41F6-BB45-F295A9AD291E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AGSRTestTask.Generator", "AGSRTestTask.Generator\AGSRTestTask.Generator.csproj", "{ACDD3B66-C4F1-48E3-A268-75EF89C3ACA5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{56FB2F17-980A-4110-A8C7-B20729AC18B0}"
+	ProjectSection(SolutionItems) = preProject
+		compose.yaml = compose.yaml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -36,10 +45,15 @@ Global
 		{17DFC638-C217-4060-960F-FF5A4F5F7A33}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17DFC638-C217-4060-960F-FF5A4F5F7A33}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17DFC638-C217-4060-960F-FF5A4F5F7A33}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ACDD3B66-C4F1-48E3-A268-75EF89C3ACA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ACDD3B66-C4F1-48E3-A268-75EF89C3ACA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ACDD3B66-C4F1-48E3-A268-75EF89C3ACA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ACDD3B66-C4F1-48E3-A268-75EF89C3ACA5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{A43547A3-E069-4822-B1FF-C8F26C0FC7D2} = {39CBEFEA-01F4-40E2-8B23-63FA883A5026}
 		{D7349056-6C1B-405D-802A-0850C41A5428} = {B66C5DEE-3628-4D1A-B972-AA5F634AB553}
 		{17DFC638-C217-4060-960F-FF5A4F5F7A33} = {2E6CADF8-D627-40A4-A085-FEFF19636AE4}
+		{ACDD3B66-C4F1-48E3-A268-75EF89C3ACA5} = {189D49FD-3055-41F6-BB45-F295A9AD291E}
 	EndGlobalSection
 EndGlobal
