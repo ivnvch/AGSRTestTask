@@ -1,47 +1,43 @@
-﻿version: "3.9"
+﻿version: '3.8'
 
 services:
   db:
     image: postgres:17
-    container_name: agsr-db
+    container_name: agsr-postgres
     environment:
-      POSTGRES_DB: agsr
-      POSTGRES_USER: agsruser
-      POSTGRES_PASSWORD: secret
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: AGSRTestTask
     ports:
       - "5432:5432"
     volumes:
-      - pgdata:/var/lib/postgresql/data
-    networks:
-      - agsr-network
+      - postgres_data:/var/lib/postgresql/data
 
-  api:
+  webapi:
     build:
-      context: ..
+      context: .
       dockerfile: AGSRTestTask.API/Dockerfile
     container_name: agsr-api
+    ports:
+      - "5134:5134"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ASPNETCORE_URLS: http://+:5134
+      ConnectionStrings__DefaultConnection: Server=db;Port=5432;Database=AGSRTestTask;User Id=postgres;Password=postgres;
     depends_on:
       - db
-    ports:
-      - "7239:80"
-    environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-    networks:
-      - agsr-network
+    restart: on-failure
 
   generator:
     build:
-      context: ..
-      dockerfile: tools/AGSRTestTask.Generator/Dockerfile
+      context: .
+      dockerfile: AGSRTestTask.Generator/Dockerfile
     container_name: agsr-generator
+    environment:
+      ConnectionStrings__DefaultConnection: Server=db;Port=5432;Database=AGSRTestTask;User Id=postgres;Password=postgres;
     depends_on:
-      - api
-    entrypoint: ["sh", "-c", "sleep 10 && dotnet AGSRTestTask.Generator.dll"]
-    networks:
-      - agsr-network
+      - db
+    restart: "no"
 
 volumes:
-  pgdata:
-
-networks:
-  agsr-network:
+  postgres_data:

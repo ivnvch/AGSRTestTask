@@ -14,10 +14,10 @@ public class PatientConfiguration: IEntityTypeConfiguration<Patient>
         
         builder.OwnsOne(p => p.HumanName, humanName =>
         {
-            humanName.Property(h => h.FirstName).IsRequired();
-            humanName.Property(h => h.LastName).IsRequired();
-            humanName.Property(h => h.MiddleName);
-            humanName.Property(h => h.Use);
+            humanName.Property(h => h.FirstName).IsRequired().HasColumnName("FirstName");
+            humanName.Property(h => h.LastName).IsRequired().HasColumnName("LastName");
+            humanName.Property(h => h.MiddleName).HasColumnName("MiddleName");
+            humanName.Property(h => h.Use).HasColumnName("Use");
         });
     }
 }

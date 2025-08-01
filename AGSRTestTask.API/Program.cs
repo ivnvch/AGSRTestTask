@@ -1,6 +1,7 @@
 using AGSRTestTask.Application;
 using AGSRTestTask.Extensions;
 using AGSRTestTask.Persistence;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,17 +9,27 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-//builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddSwaggerGen();
-builder.Services.AddSwagger();
-
+builder.Services.AddSwagger(); 
 builder.Services.AddPersistenceExtensions();
 builder.Services.ApplicationExtension();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    try
+    {
+        var context = services.GetRequiredService<DataContext>();
+        context.Database.Migrate(); 
+        Console.WriteLine("Database migrations applied successfully.");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"An error occurred while migrating the database: {ex.Message}");
+    }
+}
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -26,12 +37,10 @@ if (app.Environment.IsDevelopment())
         c =>
         {
             c.SwaggerEndpoint("/swagger/v1/swagger.json", "AGSRTestTask v 1.0");
-            c.SwaggerEndpoint("/swagger/v2/swagger.json", "AGSRTestTask v 2.0");
-           // c.RoutePrefix = string.Empty;
         });
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 
 app.UseAuthorization();
 
