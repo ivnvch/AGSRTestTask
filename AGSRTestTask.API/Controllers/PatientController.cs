@@ -15,7 +15,7 @@ namespace AGSRTestTask.Controllers;
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/[controller]")]
 [ApiController]
-public class PatientController : ControllerBase
+public class PatientController : BaseController
 {
     private readonly IMediator _mediator;
 
@@ -45,12 +45,7 @@ public class PatientController : ControllerBase
         
         var response = await _mediator.Send(model);
 
-        if (response.IsSuccess)
-        {
-            return Ok(response);
-        }
-
-        return BadRequest(response);
+        return Result(response);
     }
 
     /// <summary>
@@ -62,18 +57,8 @@ public class PatientController : ControllerBase
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<BaseResult<bool>>> DeletePatient([FromRoute] Guid id)
-    {
-        var command = new DeletePatientCommand(id);
-        var response = await _mediator.Send(command);
-
-        if (response.IsSuccess)
-        {
-            return Ok(response);
-        }
-
-        return BadRequest(response);
-    }
+    public async Task<ActionResult<BaseResult<bool>>> DeletePatient([FromRoute] Guid id)=>
+        Result(await _mediator.Send(new DeletePatientCommand(id)));
     
     /// <summary>
     /// End-point на обновление объекта Patient
@@ -96,11 +81,8 @@ public class PatientController : ControllerBase
             request.Use);
         
         var response = await _mediator.Send(model);
-        if (response.IsSuccess)
-        {
-            return Ok(response);
-        }
-        return BadRequest(response);
+        
+        return Result(response);
     }
 
     /// <summary>
@@ -111,17 +93,8 @@ public class PatientController : ControllerBase
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<BaseResult<GetPatientResponse>>> GetPatient([FromQuery] GetPatientRequest  request)
-    {
-        
-        var response = await _mediator.Send(new GetPatientQuery(PatientId : request.PatientId));
-        if (response.IsSuccess)
-        {
-            return Ok(response);
-        }
-        
-        return BadRequest(response);
-    }
+    public async Task<ActionResult<BaseResult<GetPatientResponse>>> GetPatient([FromQuery] GetPatientRequest  request) =>
+        Result(await _mediator.Send(new GetPatientQuery(request.PatientId)));
     
     /// <summary>
     /// Создает несколько объектов Patient одним пакетом.
@@ -131,17 +104,18 @@ public class PatientController : ControllerBase
     [HttpPost("batch")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<BaseResult>> CreatePatientsBatch([FromBody] CreatePatientListCommand request)
-    {
-        
-        var response = await _mediator.Send(request);
-
-        if (response.IsSuccess)
-        {
-            return Ok(response);
-        }
-        
-        return BadRequest(response);
-    }
+    public async Task<ActionResult<BaseResult<IEnumerable<Guid>>>> CreatePatientsBatch([FromBody] CreatePatientListCommand request)=>
+        Result(await _mediator.Send(request));
+    
+    /// <summary>
+    /// Поиск по дате рождения с фильтрами (eq, ne, gt и т.д.).
+    /// </summary>
+    /// <param name="birthDate"></param>
+    /// <returns></returns>
+    [HttpGet("searchByBirthDate")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<BaseResult<List<GetPatientResponse>>>> SearchByBirthDate([FromQuery] string birthDate)=>
+        Result(await _mediator.Send(new SearchPatientsByBirthDateQuery(birthDate)));
     
 }

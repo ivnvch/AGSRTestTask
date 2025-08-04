@@ -47,4 +47,9 @@ public abstract class BaseRepository<T>: IBaseRepository<T> where T : BaseEntity
     {
         return await _context.Set<T>().Where(expression).ToListAsync();
     }
+
+    public IQueryable<T> GetAllAsync()
+    {
+       return _context.Set<T>().AsQueryable();
+    }
 }
