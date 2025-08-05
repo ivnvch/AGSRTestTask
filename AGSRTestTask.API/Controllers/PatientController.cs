@@ -1,4 +1,3 @@
-using AGSRTestTask.Application.Patients.Commands;
 using AGSRTestTask.Application.Patients.Commands.Create;
 using AGSRTestTask.Application.Patients.Commands.Delete;
 using AGSRTestTask.Application.Patients.Commands.Update;
@@ -27,7 +26,6 @@ public class PatientController : BaseController
     /// <summary>
     /// End-point на создание объекта Patient
     /// </summary>
-    /// <param name="request">Модель Patient</param>
     /// <returns>Объект Patient</returns>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -51,7 +49,6 @@ public class PatientController : BaseController
     /// <summary>
     /// End-point на удаление объекта Patient из БД
     /// </summary>
-    /// <param name="model"></param>
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpDelete("{id}")]
@@ -63,7 +60,6 @@ public class PatientController : BaseController
     /// <summary>
     /// End-point на обновление объекта Patient
     /// </summary>
-    /// <param name="request"></param>
     /// <returns>Обновлённый объект Patient</returns>
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -88,9 +84,8 @@ public class PatientController : BaseController
     /// <summary>
     /// End-point на получение объекта Patient
     /// </summary>
-    /// <param name="request"></param>
     /// <returns></returns>
-    [HttpGet]
+    [HttpGet("GetPatient")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<BaseResult<GetPatientResponse>>> GetPatient([FromQuery] GetPatientRequest  request) =>
@@ -99,7 +94,6 @@ public class PatientController : BaseController
     /// <summary>
     /// Создает несколько объектов Patient одним пакетом.
     /// </summary>
-    /// <param name="request">Список данных для создания объектов Patient</param>
     /// <returns>Результат пакетного создания.</returns>
     [HttpPost("batch")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -110,12 +104,16 @@ public class PatientController : BaseController
     /// <summary>
     /// Поиск по дате рождения с фильтрами (eq, ne, gt и т.д.).
     /// </summary>
-    /// <param name="birthDate"></param>
     /// <returns></returns>
     [HttpGet("searchByBirthDate")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<BaseResult<List<GetPatientResponse>>>> SearchByBirthDate([FromQuery] string birthDate)=>
-        Result(await _mediator.Send(new SearchPatientsByBirthDateQuery(birthDate)));
+    public async Task<ActionResult<BaseResult<List<GetPatientResponse>>>> SearchByBirthDate([FromQuery] List<string> birthDateFilters)
+    {
+        var query = new SearchPatientsByBirthDateQuery(BirthDateFilters: birthDateFilters);
+
+        var result = await _mediator.Send(query);
+        return Ok(result);
+    }
     
 }
