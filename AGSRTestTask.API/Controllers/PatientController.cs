@@ -1,4 +1,3 @@
-using AGSRTestTask.Application.Patients.Commands;
 using AGSRTestTask.Application.Patients.Commands.Create;
 using AGSRTestTask.Application.Patients.Commands.Delete;
 using AGSRTestTask.Application.Patients.Commands.Update;
@@ -15,7 +14,7 @@ namespace AGSRTestTask.Controllers;
 [ApiVersion("1.0")]
 [Route("api/v{version:apiVersion}/[controller]")]
 [ApiController]
-public class PatientController : ControllerBase
+public class PatientController : BaseController
 {
     private readonly IMediator _mediator;
 
@@ -27,7 +26,6 @@ public class PatientController : ControllerBase
     /// <summary>
     /// End-point на создание объекта Patient
     /// </summary>
-    /// <param name="request">Модель Patient</param>
     /// <returns>Объект Patient</returns>
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -45,40 +43,23 @@ public class PatientController : ControllerBase
         
         var response = await _mediator.Send(model);
 
-        if (response.IsSuccess)
-        {
-            return Ok(response);
-        }
-
-        return BadRequest(response);
+        return Result(response);
     }
 
     /// <summary>
     /// End-point на удаление объекта Patient из БД
     /// </summary>
-    /// <param name="model"></param>
     /// <param name="id"></param>
     /// <returns></returns>
     [HttpDelete("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<BaseResult<bool>>> DeletePatient([FromRoute] Guid id)
-    {
-        var command = new DeletePatientCommand(id);
-        var response = await _mediator.Send(command);
-
-        if (response.IsSuccess)
-        {
-            return Ok(response);
-        }
-
-        return BadRequest(response);
-    }
+    public async Task<ActionResult<BaseResult<bool>>> DeletePatient([FromRoute] Guid id)=>
+        Result(await _mediator.Send(new DeletePatientCommand(id)));
     
     /// <summary>
     /// End-point на обновление объекта Patient
     /// </summary>
-    /// <param name="request"></param>
     /// <returns>Обновлённый объект Patient</returns>
     [HttpPut("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
@@ -96,52 +77,43 @@ public class PatientController : ControllerBase
             request.Use);
         
         var response = await _mediator.Send(model);
-        if (response.IsSuccess)
-        {
-            return Ok(response);
-        }
-        return BadRequest(response);
+        
+        return Result(response);
     }
 
     /// <summary>
     /// End-point на получение объекта Patient
     /// </summary>
-    /// <param name="request"></param>
     /// <returns></returns>
-    [HttpGet]
+    [HttpGet("GetPatient")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<BaseResult<GetPatientResponse>>> GetPatient([FromQuery] GetPatientRequest  request)
-    {
-        
-        var response = await _mediator.Send(new GetPatientQuery(PatientId : request.PatientId));
-        if (response.IsSuccess)
-        {
-            return Ok(response);
-        }
-        
-        return BadRequest(response);
-    }
+    public async Task<ActionResult<BaseResult<GetPatientResponse>>> GetPatient([FromQuery] GetPatientRequest  request) =>
+        Result(await _mediator.Send(new GetPatientQuery(request.PatientId)));
     
     /// <summary>
     /// Создает несколько объектов Patient одним пакетом.
     /// </summary>
-    /// <param name="request">Список данных для создания объектов Patient</param>
     /// <returns>Результат пакетного создания.</returns>
     [HttpPost("batch")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<BaseResult>> CreatePatientsBatch([FromBody] CreatePatientListCommand request)
+    public async Task<ActionResult<BaseResult<IEnumerable<Guid>>>> CreatePatientsBatch([FromBody] CreatePatientListCommand request)=>
+        Result(await _mediator.Send(request));
+    
+    /// <summary>
+    /// Поиск по дате рождения с фильтрами (eq, ne, gt и т.д.).
+    /// </summary>
+    /// <returns></returns>
+    [HttpGet("searchByBirthDate")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult<BaseResult<List<GetPatientResponse>>>> SearchByBirthDate([FromQuery] List<string> birthDateFilters)
     {
-        
-        var response = await _mediator.Send(request);
+        var query = new SearchPatientsByBirthDateQuery(BirthDateFilters: birthDateFilters);
 
-        if (response.IsSuccess)
-        {
-            return Ok(response);
-        }
-        
-        return BadRequest(response);
+        var result = await _mediator.Send(query);
+        return Ok(result);
     }
     
 }
